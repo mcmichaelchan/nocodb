@@ -115,7 +115,7 @@ async function getMetaDiff(
   const tableList: Array<{ tn: string }> = (
     await sqlClient.tableList()
   )?.data?.list?.filter((t) => {
-    if (project?.prefix) {
+    if (project?.prefix && base.is_meta) {
       return t.tn?.startsWith(project?.prefix);
     }
     return true;
@@ -412,7 +412,7 @@ async function getMetaDiff(
       return v;
     })
     .filter((t) => {
-      if (project?.prefix) {
+      if (project?.prefix && base.is_meta) {
         return t.tn?.startsWith(project?.prefix);
       }
       return true;
@@ -527,11 +527,11 @@ async function getMetaDiff(
 
 export async function metaDiff(req, res) {
   const project = await Project.getWithInfo(req.params.projectId);
-  const changes = []
+  let changes = []
   for (const base of project.bases) {
     // @ts-ignore
     const sqlClient = NcConnectionMgrv2.getSqlClient(base);
-    changes.push(await getMetaDiff(sqlClient, project, base));
+    changes = changes.concat(await getMetaDiff(sqlClient, project, base));
   }
 
   res.json(changes);
@@ -562,7 +562,7 @@ export async function metaDiffSync(req, res) {
   
               const model = await Model.insert(project.id, base.id, {
                 table_name: table_name,
-                title: getTableNameAlias(table_name, project.prefix, base),
+                title: getTableNameAlias(table_name, base.is_meta ? project.prefix : '', base),
                 type: ModelTypes.TABLE,
               });
   
