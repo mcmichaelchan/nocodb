@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/core'
 import { SqlUiFactory } from 'nocodb-sdk'
-import type { OracleUi, ProjectType, TableType } from 'nocodb-sdk'
+import type { BaseType, OracleUi, ProjectType, TableType } from 'nocodb-sdk'
 import { useNuxtApp, useRoute } from '#app'
 import type { ProjectMetaInfo } from '~/lib'
 import type { ThemeConfig } from '@/composables/useTheme'
@@ -14,6 +14,7 @@ const [setup, use] = useInjectionState((_projectId?: MaybeRef<string>) => {
 
   const projectId = computed(() => (_projectId ? unref(_projectId) : (route.params.projectId as string)))
   const project = ref<ProjectType>({})
+  const bases = computed<BaseType[]>(() => project.value?.bases || [])
   const tables = ref<TableType[]>([])
   const projectRoles = useState<Record<string, boolean>>(USER_PROJECT_ROLES, () => ({}))
   const projectMetaInfo = ref<ProjectMetaInfo | undefined>()
@@ -29,15 +30,35 @@ const [setup, use] = useInjectionState((_projectId?: MaybeRef<string>) => {
     }
   })
 
-  const projectBaseType = $computed(() => project.value?.bases?.[0]?.type || '')
+  const sqlUis = computed(() => {
+    const temp: Record<string, any> = {}
+    for (const base of bases.value) {
+      if (base.id) {
+        temp[base.id] = SqlUiFactory.create({ client: base.type }) as Exclude<
+          ReturnType<typeof SqlUiFactory['create']>,
+          typeof OracleUi
+        >
+      }
+    }
+    return temp
+  })
 
-  const sqlUi = computed(
-    () => SqlUiFactory.create({ client: projectBaseType }) as Exclude<ReturnType<typeof SqlUiFactory['create']>, typeof OracleUi>,
-  )
+  function getBaseType(baseId: string) {
+    return bases.value.find((base) => base.id === baseId)?.type || 'mysql2'
+  }
 
-  const isMysql = computed(() => ['mysql', 'mysql2'].includes(projectBaseType))
-  const isMssql = computed(() => projectBaseType === 'mssql')
-  const isPg = computed(() => projectBaseType === 'pg')
+  function isMysql(baseId: string) {
+    return ['mysql', 'mysql2'].includes(getBaseType(baseId))
+  }
+
+  function isMssql(baseId: string) {
+    return getBaseType(baseId) === 'mssql'
+  }
+
+  function isPg(baseId: string) {
+    return getBaseType(baseId) === 'pg'
+  }
+
   const isSharedBase = computed(() => projectType === 'base')
 
   async function loadProjectMetaInfo(force?: boolean) {
@@ -137,6 +158,7 @@ const [setup, use] = useInjectionState((_projectId?: MaybeRef<string>) => {
 
   return {
     project,
+    bases,
     tables,
     loadProjectRoles,
     loadProject,
@@ -145,7 +167,7 @@ const [setup, use] = useInjectionState((_projectId?: MaybeRef<string>) => {
     isMysql,
     isMssql,
     isPg,
-    sqlUi,
+    sqlUis,
     isSharedBase,
     loadProjectMetaInfo,
     projectMetaInfo,

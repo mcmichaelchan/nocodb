@@ -17,7 +17,9 @@ export function useTable(onTableCreate?: (tableMeta: TableType) => void) {
   const { getMeta, removeMeta } = useMetas()
   const { loadTables } = useProject()
   const { closeTab } = useTabs()
-  const { sqlUi, project, tables } = useProject()
+  const { sqlUis, project, tables } = useProject()
+
+  const sqlUi = ref(sqlUis.value[0])
 
   const createTable = async () => {
     if (!sqlUi?.value) return
