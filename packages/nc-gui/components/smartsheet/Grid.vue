@@ -381,8 +381,8 @@ onBeforeUnmount(async () => {
 
 <template>
   <div class="relative flex flex-col h-full min-h-0 w-full">
-    <general-overlay :model-value="isLoading" inline transition>
-      <div class="flex items-center justify-center h-full w-full !bg-white !bg-opacity-85 z-1000">
+    <general-overlay :model-value="isLoading" inline>
+      <div class="flex items-center justify-center h-full w-full !bg-white bg-opacity-75 z-1000">
         <a-spin size="large" />
       </div>
     </general-overlay>
