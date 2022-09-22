@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { onMounted } from '@vue/runtime-core'
 import { isVirtualCol } from 'nocodb-sdk'
 import {
   ActiveViewInj,
@@ -13,16 +12,16 @@ import {
   PaginationDataInj,
   ReadonlyInj,
   ReloadViewMetaHookInj,
-  extractPkFromRow,
   computed,
   createEventHook,
+  extractPkFromRow,
   inject,
   nextTick,
+  onMounted,
   provide,
   ref,
   useUIPermission,
   useViewData,
-  watch,
 } from '#imports'
 import type { Row as RowType } from '~/lib'
 
@@ -92,7 +91,7 @@ const attachments = (record: any): Attachment[] => {
 const expandForm = (row: RowType, _state?: Record<string, any>) => {
   if (!isUIAllowed('xcDatatableEditable')) return
 
-  const rowId = extractPkFromRow(row.row, meta.value.columns)
+  const rowId = extractPkFromRow(row.row, meta.value!.columns!)
 
   if (rowId) {
     router.push({
@@ -103,7 +102,7 @@ const expandForm = (row: RowType, _state?: Record<string, any>) => {
     })
   } else {
     expandedFormRow.value = row
-    expandedFormRowState.value = state
+    expandedFormRowState.value = _state
     expandedFormDlg.value = true
   }
 }
@@ -173,12 +172,15 @@ onMounted(async () => {
                     </div>
                   </a>
                 </template>
+
                 <template #prevArrow>
                   <div style="z-index: 1"></div>
                 </template>
+
                 <template #nextArrow>
                   <div style="z-index: 1"></div>
                 </template>
+
                 <LazyNuxtImg
                   v-for="(attachment, index) in attachments(record)"
                   :key="`carousel-${record.row.id}-${index}`"
@@ -188,6 +190,7 @@ onMounted(async () => {
                   :src="attachment.url"
                 />
               </a-carousel>
+
               <MdiFileImageBox v-else class="w-full h-48 my-4 text-cool-gray-200" />
             </template>
 
@@ -199,12 +202,14 @@ onMounted(async () => {
               <div class="flex flex-row w-full justify-start border-b-1 border-gray-100 py-2.5">
                 <div class="w-full text-gray-600">
                   <LazySmartsheetHeaderVirtualCell v-if="isVirtualCol(col)" :column="col" :hide-menu="true" />
+
                   <LazySmartsheetHeaderCell v-else :column="col" :hide-menu="true" />
                 </div>
               </div>
 
               <div class="flex flex-row w-full pb-3 pt-2 pl-2 items-center justify-start">
                 <div v-if="isRowEmpty(record, col)" class="h-3 bg-gray-200 px-5 rounded-lg"></div>
+
                 <template v-else>
                   <LazySmartsheetVirtualCell
                     v-if="isVirtualCol(col)"
@@ -212,6 +217,7 @@ onMounted(async () => {
                     :column="col"
                     :row="record"
                   />
+
                   <LazySmartsheetCell
                     v-else
                     v-model="record.row[col.title]"
@@ -240,7 +246,7 @@ onMounted(async () => {
       :view="view"
     />
 
-    <SmartsheetExpandedForm
+    <LazySmartsheetExpandedForm
       v-if="expandedFormOnRowIdDlg"
       :key="route.query.rowId"
       v-model="expandedFormOnRowIdDlg"
