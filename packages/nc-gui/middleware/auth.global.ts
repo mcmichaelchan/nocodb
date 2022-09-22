@@ -32,7 +32,7 @@ import { useApi, useGlobal } from '#imports'
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const state = useGlobal()
 
-  const { api } = useApi()
+  const { api } = useApi({ useGlobalInstance: true })
 
   /** if user isn't signed in and google auth is enabled, try to check if sign-in data is present */
   if (!state.signedIn && state.appInfo.value.googleAuthEnabled) await tryGoogleAuth()
