@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ColumnType } from 'nocodb-sdk'
 import type { Ref } from 'vue'
-import { ColumnInj, toRef, useColumn } from '#imports'
+import { ColumnInj, computed, inject, toRef, useColumn } from '#imports'
 import FilePhoneIcon from '~icons/mdi/file-phone'
 import KeyIcon from '~icons/mdi/key-variant'
 import JSONIcon from '~icons/mdi/code-json'
@@ -27,6 +27,7 @@ import SpecificDBTypeIcon from '~icons/mdi/database-settings'
 const props = defineProps<{ columnMeta?: ColumnType }>()
 
 const columnMeta = toRef(props, 'columnMeta')
+
 const column = inject(ColumnInj, columnMeta)
 
 const additionalColMeta = useColumn(column as Ref<ColumnType>)
