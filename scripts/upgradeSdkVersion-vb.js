@@ -9,3 +9,10 @@ const nocodbPackageFilePath = path.join(
   "package.json"
 );
 const nocoLibPackage = JSON.parse(fs.readFileSync(nocodbPackageFilePath));
+
+nocoLibPackage.dependencies["nocodb-sdk"] = process.env.latestVersion;
+
+fs.writeFileSync(
+  nocodbPackageFilePath,
+  JSON.stringify(nocoLibPackage, null, 2)
+);

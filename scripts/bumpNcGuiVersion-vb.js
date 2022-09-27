@@ -1,19 +1,16 @@
 const fs = require("fs");
 const path = require("path");
 
-const nocodbPackageFilePath = path.join(
-  __dirname,
-  "..",
-  "packages",
-  "nocodb",
-  "package.json"
+const packageJson = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "packages", "nc-lib-gui", "package.json"),
+    "utf8"
+  )
 );
 
-const packageJson = JSON.parse(fs.readFileSync(nocodbPackageFilePath, "utf8"));
-
-nocoLibPackage.dependencies["nocodb-sdk"] = process.env.latestVersion;
-
+packageJson.name += "-vb";
+packageJson.version = process.env.targetVersion;
 fs.writeFileSync(
-  nocodbPackageFilePath,
-  JSON.stringify(nocoLibPackage, null, 2)
+  path.join(__dirname, "..", "packages", "nc-lib-gui", "package.json"),
+  JSON.stringify(packageJson, 0, 2)
 );
