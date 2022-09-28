@@ -8,7 +8,7 @@ const packageJson = JSON.parse(
   )
 );
 
-packageJson.name += "-vb";
+packageJson.name = `@tencent/${packageJson.name}-vb`;
 packageJson.version = process.env.targetVersion;
 fs.writeFileSync(
   path.join(__dirname, "..", "packages", "nc-lib-gui", "package.json"),
