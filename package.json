@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "express": "^4.18.1",
-    "faker": "^5.5.3",
     "mysql2": "^2.3.3",
     "pg": "^8.7.3",
     "sqlite3": "^5.0.2"
