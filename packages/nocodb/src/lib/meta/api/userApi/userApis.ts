@@ -146,7 +146,7 @@ export async function signup(req: Request, res: Response<TableType>) {
 
   user = (req as any).user;
 
-  Audit.insert({
+  await Audit.insert({
     op_type: 'AUTHENTICATION',
     op_sub_type: 'SIGNUP',
     user: user.email,
@@ -193,7 +193,7 @@ async function successfulSignIn({
     });
     setTokenCookie(res, refreshToken);
 
-    Audit.insert({
+    await Audit.insert({
       op_type: 'AUTHENTICATION',
       op_sub_type: 'SIGNIN',
       user: user.email,
@@ -269,11 +269,10 @@ async function powerSignin(req, res, next) {
         req,
         res,
         auditDescription: 'signed in using Power Auth',
-        redirectUrl: process.env.LOCAL
-          ? 'http://localhost:3000'
-          : req.ncSiteUrl +
-            Noco.getConfig().dashboardPath +
-            '/#/power-redirect',
+        redirectUrl:
+          (process.env.LOCAL ? 'http://localhost:3000' : req.ncSiteUrl) +
+          Noco.getConfig().dashboardPath +
+          '/#/power-redirect',
       })
   )(req, res, next);
 }
@@ -325,7 +324,7 @@ async function passwordChange(req: Request<any, any>, res): Promise<any> {
     token_version: null,
   });
 
-  Audit.insert({
+  await Audit.insert({
     op_type: 'AUTHENTICATION',
     op_sub_type: 'PASSWORD_CHANGE',
     user: user.email,
@@ -375,7 +374,7 @@ async function passwordForgot(req: Request<any, any>, res): Promise<any> {
       );
     }
 
-    Audit.insert({
+    await Audit.insert({
       op_type: 'AUTHENTICATION',
       op_sub_type: 'PASSWORD_FORGOT',
       user: user.email,
@@ -439,7 +438,7 @@ async function passwordReset(req, res): Promise<any> {
     token_version: null,
   });
 
-  Audit.insert({
+  await Audit.insert({
     op_type: 'AUTHENTICATION',
     op_sub_type: 'PASSWORD_RESET',
     user: user.email,
@@ -467,7 +466,7 @@ async function emailVerification(req, res): Promise<any> {
     email_verified: true,
   });
 
-  Audit.insert({
+  await Audit.insert({
     op_type: 'AUTHENTICATION',
     op_sub_type: 'EMAIL_VERIFICATION',
     user: user.email,
