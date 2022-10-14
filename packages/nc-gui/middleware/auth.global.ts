@@ -83,26 +83,22 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
  * If present, try using google auth data to sign user in before navigating to the next page
  */
 async function tryGoogleAuth() {
-  const { signIn } = useGlobal()
-
-  const { api } = useApi()
-
-  if (window.location.search && /\bscope=|\bstate=/.test(window.location.search) && /\bcode=/.test(window.location.search)) {
-    try {
-      const {
-        data: { token },
-      } = await api.instance.post(
-        `/auth/${window.location.search.includes('state=github') ? 'github' : 'google'}/genTokenByCode${window.location.search}`,
-      )
-
-      signIn(token)
-    } catch (e: any) {
-      if (e.response && e.response.data && e.response.data.msg) {
-        message.error({ content: e.response.data.msg })
-      }
-    }
-
-    const newURL = window.location.href.split('?')[0]
-    window.history.pushState('object', document.title, newURL)
-  }
+  // const { signIn } = useGlobal()
+  // const { api } = useApi()
+  // if (window.location.search && /\bscope=|\bstate=/.test(window.location.search) && /\bcode=/.test(window.location.search)) {
+  //   try {
+  //     const {
+  //       data: { token },
+  //     } = await api.instance.post(
+  //       `/auth/${window.location.search.includes('state=github') ? 'github' : 'google'}/genTokenByCode${window.location.search}`,
+  //     )
+  //     signIn(token)
+  //   } catch (e: any) {
+  //     if (e.response && e.response.data && e.response.data.msg) {
+  //       message.error({ content: e.response.data.msg })
+  //     }
+  //   }
+  //   const newURL = window.location.href.split('?')[0]
+  //   window.history.pushState('object', document.title, newURL)
+  // }
 }

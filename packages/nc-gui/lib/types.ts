@@ -7,6 +7,7 @@ export interface User {
   email: string
   firstname: string | null
   lastname: string | null
+  username?: string | null
   roles: Roles
   invite_token?: string
   project_id?: string

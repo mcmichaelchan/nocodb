@@ -166,7 +166,8 @@ async function successfulSignIn({
   req,
   res,
   auditDescription,
-}) {
+  redirectUrl,
+}: any) {
   try {
     if (!user || !user.email) {
       if (err) {
@@ -200,9 +201,18 @@ async function successfulSignIn({
       description: auditDescription,
     });
 
-    res.json({
-      token: genJwt(user, Noco.getConfig()),
-    } as any);
+    console.log(process.env);
+
+    if (redirectUrl) {
+      res.redirect(
+        301,
+        `${redirectUrl}?token=${genJwt(user, Noco.getConfig())}`
+      );
+    } else {
+      res.json({
+        token: genJwt(user, Noco.getConfig()),
+      } as any);
+    }
   } catch (e) {
     console.log(e);
     throw e;
@@ -240,6 +250,30 @@ async function googleSignin(req, res, next) {
         req,
         res,
         auditDescription: 'signed in using Google Auth',
+      })
+  )(req, res, next);
+}
+
+async function powerSignin(req, res, next) {
+  passport.authenticate(
+    'power',
+    {
+      session: false,
+      callbackURL: req.ncSiteUrl + '/auth/power/genTokenByCode',
+    },
+    async (err, user, info): Promise<any> =>
+      await successfulSignIn({
+        user,
+        err,
+        info,
+        req,
+        res,
+        auditDescription: 'signed in using Power Auth',
+        redirectUrl: process.env.LOCAL
+          ? 'http://localhost:3000'
+          : req.ncSiteUrl +
+            Noco.getConfig().dashboardPath +
+            '/#/power-redirect',
       })
   )(req, res, next);
 }
@@ -512,6 +546,16 @@ const mapRoutes = (router) => {
       callbackURL: req.ncSiteUrl + Noco.getConfig().dashboardPath,
     })(req, res, next)
   );
+
+  router.get('/auth/power', (req: any, res, next) =>
+    passport.authenticate('power', {
+      // state: req.query.state,
+      callbackURL: req.ncSiteUrl + '/auth/power/genTokenByCode',
+      // callbackURL: 'https://www.baidu.com',
+    })(req, res, next)
+  );
+
+  router.get(`/auth/power/genTokenByCode`, catchError(powerSignin));
 
   // deprecated APIs
   router.post('/api/v1/db/auth/user/signup', catchError(signup));

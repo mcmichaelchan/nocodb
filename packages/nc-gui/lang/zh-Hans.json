@@ -36,6 +36,7 @@
     "removeAll": "移除所有",
     "signUp": "注册",
     "signIn": "登录",
+    "signInWithPower": "使用power登录",
     "signOut": "登出",
     "required": "必填项",
     "preferred": "首选",

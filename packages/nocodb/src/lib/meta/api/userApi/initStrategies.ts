@@ -1,11 +1,13 @@
 import User from '../../../models/User';
 import ProjectUser from '../../../models/ProjectUser';
 import { promisify } from 'util';
+import axios from 'axios';
 import { Strategy as CustomStrategy } from 'passport-custom';
 import passport from 'passport';
 import passportJWT from 'passport-jwt';
 import { Strategy as AuthTokenStrategy } from 'passport-auth-token';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Strategy as Oauth2Strategy } from 'passport-oauth2';
 import { randomTokenString } from '../../helpers/stringHelpers';
 
 const PassportLocalStrategy = require('passport-local').Strategy;
@@ -205,6 +207,83 @@ export function initStrategies(router): void {
       callback(null, user);
     })
   );
+
+  // power oauth
+  const clientID = 'a3bdc0c84ef14b7a';
+  const clientSecret = '49eb8809e4d6a5700f82aa2b4cd2f8c9';
+  const callbackURL = 'localhost:3000';
+  const powerDomain = 'http://betapower.fusion.woa.com';
+
+  const powerConfig = {
+    authorizationURL: `${powerDomain}/oauth/authorize`,
+    tokenURL: `${powerDomain}/connect/token`,
+    clientID,
+    clientSecret,
+    callbackURL,
+  };
+  const powerStrategy = new Oauth2Strategy(
+    powerConfig,
+    async (accessToken, refreshToken, profile, cb) => {
+      try {
+        // console.log(accessToken, refreshToken, profile);
+        // cb(null, {});
+        // find if user exists
+        const { data: userInfo } = await axios.get(
+          `${powerDomain}/api/user/meAndExt`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              client_id: clientID,
+            },
+          }
+        );
+        const { userExt, userId } = userInfo;
+        const { defaultMailType, tencentMail, fusionMail } = userExt;
+        const nickname = userInfo.nickname || userId;
+        const email = defaultMailType === 0 ? tencentMail : fusionMail;
+        let user = await User.getByEmail(email);
+        if (!user) {
+          // register
+          let roles = 'editor';
+
+          if (!(await User.isFirst())) {
+            roles = 'owner';
+          }
+
+          const salt = await promisify(bcrypt.genSalt)(10);
+          user = await await User.insert({
+            email: 'mcjjchen@tencent.com',
+            password: '',
+            salt,
+            firstname: nickname,
+            username: userId,
+            roles,
+            email_verified: true,
+            token_version: randomTokenString(),
+          });
+        } else {
+          await User.update(user.id, {
+            firstname: nickname,
+            username: userId,
+          });
+          user.username = userId;
+          user.firstname = nickname;
+        }
+        cb(null, user);
+      } catch (e) {
+        console.log(e);
+        cb(e, null);
+      }
+    }
+  );
+
+  powerStrategy.authorizationParams = function () {
+    return {
+      state: 'power',
+    };
+  };
+
+  passport.use('power', powerStrategy);
 
   // mostly copied from older code
   Plugin.getPluginByTitle('Google').then((googlePlugin) => {

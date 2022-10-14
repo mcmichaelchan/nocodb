@@ -2,13 +2,12 @@ version: "2.1"
 
 services:
   nocodb:
-    image: nocodb/nocodb:test2
+    image: mirrors.tencent.com/floway/nococbvb:0.97.0-20220928-1122
     ports:
       - "19000:8080"
     restart: always
     volumes:
       - nc_data:/usr/app/data
-      - ./data:/usr/app/test
     environment:
       NC_DB: "mysql2://9.135.135.26:3306?u=root&p=JpFCN@3598PZXv&d=nocodb"
       NC_REDIS_URL: "redis://:pjwqV*6537UqmK@9.134.41.197:6380/4"

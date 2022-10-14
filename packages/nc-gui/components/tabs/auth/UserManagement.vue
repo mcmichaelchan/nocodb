@@ -231,7 +231,7 @@ watchDebounced(searchText, () => loadUsers(), { debounce: 300, maxWait: 600 })
         <div class="flex flex-row w-4/6 space-x-1 items-center pl-1">
           <EvaEmailOutline class="flex text-gray-500 -mt-0.5" />
 
-          <div class="text-gray-600 text-xs space-x-1">{{ $t('labels.email') }}</div>
+          <div class="text-gray-600 text-xs space-x-1">{{ $t('objects.user') }}</div>
         </div>
         <div class="flex flex-row justify-center w-1/6 space-x-1 items-center pl-1">
           <MdiDramaMasks class="flex text-gray-500 -mt-0.5" />
@@ -245,7 +245,7 @@ watchDebounced(searchText, () => loadUsers(), { debounce: 300, maxWait: 600 })
 
       <div v-for="(user, index) of users" :key="index" class="flex flex-row items-center border-b-1 py-2 px-2 nc-user-row">
         <div class="flex w-4/6 flex-wrap nc-user-email">
-          {{ user.email }}
+          {{ user.firstname || 'N/A' }}
         </div>
 
         <div class="flex w-1/6 justify-center flex-wrap ml-4">
@@ -329,7 +329,7 @@ watchDebounced(searchText, () => loadUsers(), { debounce: 300, maxWait: 600 })
         show-less-items
         @change="loadUsers"
       />
-      <FeedbackForm />
+      <!-- <FeedbackForm /> -->
     </div>
   </div>
 </template>

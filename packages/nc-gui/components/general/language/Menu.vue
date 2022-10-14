@@ -39,7 +39,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <a-menu-item class="mt-1 group">
+  <!-- <a-menu-item class="mt-1 group">
     <a
       href="https://docs.nocodb.com/engineering/translation/#how-to-contribute--for-community-members"
       target="_blank"
@@ -47,7 +47,7 @@ onMounted(() => {
     >
       {{ $t('activity.translate') }}
     </a>
-  </a-menu-item>
+  </a-menu-item> -->
 
   <a-menu-item
     v-for="[key, lang] of languages"

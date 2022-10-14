@@ -71,6 +71,7 @@ export const useGlobal = (): UseGlobalReturn => {
           email: nextPayload.email,
           firstname: nextPayload.firstname,
           lastname: nextPayload.lastname,
+          username: nextPayload.username,
           roles: nextPayload.roles,
         }
       }

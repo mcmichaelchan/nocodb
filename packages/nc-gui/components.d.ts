@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABadgeRibbon: typeof import('ant-design-vue/es')['BadgeRibbon']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
@@ -73,6 +74,7 @@ declare module '@vue/runtime-core' {
     CilFullscreenExit: typeof import('~icons/cil/fullscreen-exit')['default']
     ClarityColorPickerSolid: typeof import('~icons/clarity/color-picker-solid')['default']
     ClarityImageLine: typeof import('~icons/clarity/image-line')['default']
+    ClaritySuccessLine: typeof import('~icons/clarity/success-line')['default']
     EvaEmailOutline: typeof import('~icons/eva/email-outline')['default']
     IcBaselineMoreVert: typeof import('~icons/ic/baseline-more-vert')['default']
     IcOutlineInsertDriveFile: typeof import('~icons/ic/outline-insert-drive-file')['default']
@@ -159,6 +161,7 @@ declare module '@vue/runtime-core' {
     MdiInformation: typeof import('~icons/mdi/information')['default']
     MdiJson: typeof import('~icons/mdi/json')['default']
     MdiKeyboardReturn: typeof import('~icons/mdi/keyboard-return')['default']
+    MdiKeyChange: typeof import('~icons/mdi/key-change')['default']
     MdiKeyStar: typeof import('~icons/mdi/key-star')['default']
     MdiLink: typeof import('~icons/mdi/link')['default']
     MdiLinkVariant: typeof import('~icons/mdi/link-variant')['default']

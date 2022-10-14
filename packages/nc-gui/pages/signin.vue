@@ -88,17 +88,17 @@ function resetError() {
 
         <h1 class="prose-2xl font-bold self-center my-4">{{ $t('general.signIn') }}</h1>
 
-        <a-form ref="formValidator" :model="form" layout="vertical" no-style @finish="signIn">
-          <Transition name="layout">
-            <div v-if="error" class="self-center mb-4 bg-red-500 text-white rounded-lg w-3/4 mx-auto p-1">
-              <div class="flex items-center gap-2 justify-center">
-                <MaterialSymbolsWarning />
-                <div class="break-words">{{ error }}</div>
-              </div>
+        <!-- <a-form ref="formValidator" :model="form" layout="vertical" no-style @finish="signIn"> -->
+        <!-- <Transition name="layout">
+          <div v-if="error" class="self-center mb-4 bg-red-500 text-white rounded-lg w-3/4 mx-auto p-1">
+            <div class="flex items-center gap-2 justify-center">
+              <MaterialSymbolsWarning />
+              <div class="break-words">{{ error }}</div>
             </div>
-          </Transition>
+          </div>
+        </Transition> -->
 
-          <a-form-item :label="$t('labels.email')" name="email" :rules="formRules.email">
+        <!-- <a-form-item :label="$t('labels.email')" name="email" :rules="formRules.email">
             <a-input v-model:value="form.email" size="large" :placeholder="$t('msg.info.signUp.workEmail')" @focus="resetError" />
           </a-form-item>
 
@@ -116,28 +116,29 @@ function resetError() {
             <nuxt-link class="prose-sm" to="/forgot-password">
               {{ $t('msg.info.signUp.forgotPassword') }}
             </nuxt-link>
-          </div>
+          </div> -->
+        <div class="self-center flex flex-col flex-wrap gap-4 items-center mt-4 justify-center">
+          <a
+            :href="`${api.instance.defaults.baseURL}/auth/power`"
+            class="submit after:(!bg-white) !text-primary border-1 border-primary !no-underline"
+          >
+            <span class="flex items-center gap-2">
+              {{ $t('general.signInWithPower') }}
+            </span>
+          </a>
 
-          <div class="self-center flex flex-col flex-wrap gap-4 items-center mt-4 justify-center">
-            <button class="submit group" type="submit">
-              <span class="flex items-center gap-2">
-                <MdiLogin />
-                {{ $t('general.signIn') }}
-              </span>
-            </button>
-
-            <div class="text-end prose-sm">
+          <!-- <div class="text-end prose-sm">
               {{ $t('msg.info.signUp.dontHaveAccount') }}
               <nuxt-link to="/signup">{{ $t('general.signUp') }}</nuxt-link>
-            </div>
+            </div> -->
 
-            <div class="md:hidden">
-              <nuxt-link class="prose-sm" to="/forgot-password">
-                {{ $t('msg.info.signUp.forgotPassword') }}
-              </nuxt-link>
-            </div>
-          </div>
-        </a-form>
+          <!-- <div class="md:hidden">
+            <nuxt-link class="prose-sm" to="/forgot-password">
+              {{ $t('msg.info.signUp.forgotPassword') }}
+            </nuxt-link>
+          </div> -->
+        </div>
+        <!-- </a-form> -->
       </div>
     </div>
   </NuxtLayout>

@@ -7,7 +7,11 @@ const { isSharedBase } = useProject()
 
 const route = useRoute()
 
+console.log(user.value)
+
 const email = computed(() => user.value?.email ?? '---')
+const nickname = computed(() => user.value?.firstname ?? '---')
+const userId = computed(() => user.value?.username ?? '---')
 
 const hasSider = ref(false)
 
@@ -58,7 +62,7 @@ hooks.hook('page:finish', () => {
 
         <div class="flex-1" />
 
-        <GeneralReleaseInfo />
+        <!-- <GeneralReleaseInfo /> -->
 
         <a-tooltip placement="bottom" :mouse-enter-delay="1">
           <template #title> Switch language</template>
@@ -69,17 +73,18 @@ hooks.hook('page:finish', () => {
         </a-tooltip>
 
         <template v-if="signedIn && !isSharedBase">
+          <a-avatar class="avatar" :src="`https://power.fusion.woa.com/staff/download/avatar/by?username=${userId}`"></a-avatar>
           <a-dropdown :trigger="['click']" overlay-class-name="nc-dropdown-user-accounts-menu">
             <MdiDotsVertical class="md:text-xl cursor-pointer hover:text-accent nc-menu-accounts text-white" @click.prevent />
 
             <template #overlay>
               <a-menu class="!py-0 leading-8 !rounded">
                 <a-menu-item key="0" class="!rounded-t">
-                  <nuxt-link v-e="['c:navbar:user:email']" class="nc-project-menu-item group !no-underline" to="/user">
+                  <div v-e="['c:navbar:user:email']" class="nc-project-menu-item group !no-underline" to="/user">
                     <MdiAt class="mt-1 group-hover:text-accent" />&nbsp;
 
-                    <span class="prose group-hover:text-primary"> {{ email }}</span>
-                  </nuxt-link>
+                    <span class="prose group-hover:text-primary"> {{ nickname }}</span>
+                  </div>
                 </a-menu-item>
 
                 <a-menu-divider class="!m-0" />
@@ -129,5 +134,8 @@ hooks.hook('page:finish', () => {
   &:active::after {
     @apply ring ring-accent;
   }
+}
+.avatar {
+  margin-right: 8px;
 }
 </style>

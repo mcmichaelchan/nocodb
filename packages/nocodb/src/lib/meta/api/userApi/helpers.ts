@@ -9,6 +9,7 @@ export function genJwt(user: User, config: NcConfig) {
       email: user.email,
       firstname: user.firstname,
       lastname: user.lastname,
+      username: user.username,
       id: user.id,
       roles: user.roles,
       token_version: user.token_version,
