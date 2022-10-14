@@ -25,10 +25,10 @@ const replacePackageName = (filePath) => {
 
 const bumbVersionAndSave = () => {
   // upgrade nc-lib-gui version in nocodb
-  execSync(
-    `cd packages/nocodb && npm install --save --save-exact ${ncLibPackage.name}@${ncLibPackage.version}`,
-    {}
-  );
+  // execSync(
+  //   `cd packages/nocodb && npm install --save --save-exact ${ncLibPackage.name}@${ncLibPackage.version}`,
+  //   {}
+  // );
   const nocodbPackageFilePath = path.join(
     __dirname,
     "..",
@@ -38,6 +38,7 @@ const bumbVersionAndSave = () => {
   );
   const nocoLibPackage = JSON.parse(fs.readFileSync(nocodbPackageFilePath));
   nocoLibPackage.version = ncLibPackage.version;
+  nocoLibPackage.dependencies[ncLibPackage.name] = ncLibPackage.version;
   fs.writeFileSync(
     nocodbPackageFilePath,
     JSON.stringify(nocoLibPackage, null, 2)

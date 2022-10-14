@@ -32,8 +32,7 @@ COPY ./docker/start-litestream.sh /usr/src/appEntry/start.sh
 # install production dependencies,
 # reduce node_module size with modclean & removing sqlite deps,
 # package built code into app.tar.gz & add execute permission to start.sh
-RUN yarn config set registry https://mirrors.tencent.com/npm/
-RUN yarn --production \
+RUN npm i --production \
     && npx modclean --patterns="default:*" --ignore="nc-lib-gui/**,dayjs/**,express-status-monitor/**" --run  \
     && rm -rf ./node_modules/sqlite3/deps \
     && tar -czf ../appEntry/app.tar.gz ./* \
