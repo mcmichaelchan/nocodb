@@ -45,13 +45,14 @@ const bumbVersionAndSave = () => {
 };
 
 // replace nc-lib-gui by nc-lib-gui-daily if it is nightly build / pr release
-const filePaths = [
-  path.join(__dirname, "..", "packages", "nocodb", "Dockerfile"),
-  path.join(__dirname, "..", "packages", "nocodb", "litestream", "Dockerfile"),
-  path.join(__dirname, "..", "packages", "nocodb", "package.json"),
-  path.join(__dirname, "..", "packages", "nocodb", "README.md"),
-  path.join(__dirname, "..", "packages", "nocodb", "src", "lib", "Noco.ts"),
-];
+// const filePaths = [
+//   path.join(__dirname, "..", "packages", "nocodb", "Dockerfile"),
+//   path.join(__dirname, "..", "packages", "nocodb", "litestream", "Dockerfile"),
+//   path.join(__dirname, "..", "packages", "nocodb", "package.json"),
+//   path.join(__dirname, "..", "packages", "nocodb", "README.md"),
+//   path.join(__dirname, "..", "packages", "nocodb", "src", "lib", "Noco.ts"),
+// ];
+const filePaths = [];
 Promise.all(
   filePaths.map((filePath) => {
     return replacePackageName(filePath);
