@@ -3,6 +3,7 @@ import { TableType, validatePassword } from 'nocodb-sdk';
 import catchError, { NcError } from '../../helpers/catchError';
 const { isEmail } = require('validator');
 import * as ejs from 'ejs';
+import axios from 'axios';
 
 import bcrypt from 'bcryptjs';
 import { promisify } from 'util';
@@ -20,6 +21,7 @@ import { MetaTable } from '../../../utils/globals';
 import Noco from '../../../Noco';
 import { genJwt } from './helpers';
 import { randomTokenString } from '../../helpers/stringHelpers';
+import { axiosRequestMake } from '../utilApis';
 
 export async function signup(req: Request, res: Response<TableType>) {
   const {
@@ -269,10 +271,11 @@ async function powerSignin(req, res, next) {
         req,
         res,
         auditDescription: 'signed in using Power Auth',
-        redirectUrl:
-          (process.env.LOCAL ? 'http://localhost:3000' : req.ncSiteUrl) +
-          Noco.getConfig().dashboardPath +
-          '/#/power-redirect',
+        redirectUrl: process.env.LOCAL
+          ? 'http://localhost:3000/power-redirect'
+          : req.ncSiteUrl +
+            Noco.getConfig().dashboardPath +
+            '/#/power-redirect',
       })
   )(req, res, next);
 }
@@ -519,8 +522,22 @@ async function renderPasswordReset(req, res): Promise<any> {
   }
 }
 
+async function searchPowerUser(req, res): Promise<any> {
+  try {
+    const { data } = await axios.get(
+      `http://devops.fusion.woa.com/openapi/staff/getUserSelector?name=${req.query.name}`
+    );
+
+    res.json({ data });
+  } catch (e) {
+    console.log(e);
+    return res.status(400).json({ msg: e.message });
+  }
+}
+
 const mapRoutes = (router) => {
   // todo: old api - /auth/signup?tool=1
+  router.get('/api/v1/auth/power/search', catchError(searchPowerUser));
   router.post('/auth/user/signup', catchError(signup));
   router.post('/auth/user/signin', catchError(signin));
   router.get('/auth/user/me', extractProjectIdAndAuthenticate, catchError(me));

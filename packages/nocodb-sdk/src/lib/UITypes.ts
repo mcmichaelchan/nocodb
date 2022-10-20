@@ -36,6 +36,7 @@ enum UITypes {
   SpecificDBType = 'SpecificDBType',
   Barcode = 'Barcode',
   Button = 'Button',
+  UserSelector = 'UserSelector',
 }
 
 export function isVirtualCol(

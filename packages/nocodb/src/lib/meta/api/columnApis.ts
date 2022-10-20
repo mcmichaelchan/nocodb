@@ -122,6 +122,7 @@ export async function columnAdd(req: Request, res: Response<TableType>) {
   }
 
   let colBody = req.body;
+  console.log(colBody);
   switch (colBody.uidt) {
     case UITypes.Rollup:
       {

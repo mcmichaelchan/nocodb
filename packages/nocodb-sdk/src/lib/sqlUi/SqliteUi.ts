@@ -920,6 +920,7 @@ export class SqliteUi {
       case 'ForeignKey':
         return dbTypes;
       case 'SingleLineText':
+      case 'UserSelector':
       case 'LongText':
       case 'Attachment':
       case 'Collaborator':

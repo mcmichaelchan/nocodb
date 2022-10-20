@@ -24,6 +24,7 @@ import PercentIcon from '~icons/mdi/percent-outline'
 import DecimalIcon from '~icons/mdi/decimal'
 import SpecificDBTypeIcon from '~icons/mdi/database-settings'
 import DurationIcon from '~icons/mdi/timer-outline'
+import UserIcon from '~icons/material-symbols/supervised-user-circle'
 
 const props = defineProps<{ columnMeta?: ColumnType }>()
 
@@ -49,6 +50,7 @@ const icon = computed(() => {
   } else if (additionalColMeta.isBoolean.value) {
     return BooleanIcon
   } else if (additionalColMeta.isTextArea.value) {
+    console.log('text?')
     return TextAreaIcon
   } else if (additionalColMeta.isEmail.value) {
     return EmailIcon
@@ -78,6 +80,8 @@ const icon = computed(() => {
     return StringIcon
   } else if (additionalColMeta.isSpecificDBType.value) {
     return SpecificDBTypeIcon
+  } else if (additionalColMeta.isUserSelector.value) {
+    return UserIcon
   } else {
     return GenericIcon
   }

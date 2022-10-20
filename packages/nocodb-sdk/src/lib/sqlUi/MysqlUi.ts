@@ -1074,6 +1074,9 @@ export class MysqlUi {
       case 'JSON':
         colProp.dt = 'json';
         break;
+      case 'UserSelector':
+        colProp.dt = 'varchar';
+        break;
       default:
         colProp.dt = 'varchar';
         break;

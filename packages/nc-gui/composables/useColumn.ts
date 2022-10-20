@@ -19,7 +19,9 @@ export function useColumn(column: Ref<ColumnType | undefined>) {
 
   const dataTypeLow = computed(() => column.value?.dt?.toLowerCase())
   const isBoolean = computed(() => abstractType.value === 'boolean')
-  const isString = computed(() => uiDatatype.value === UITypes.SingleLineText || abstractType.value === 'string')
+  const isString = computed(
+    () => uiDatatype.value === UITypes.SingleLineText || (uiDatatype.value !== 'UserSelector' && abstractType.value === 'string'),
+  )
   const isTextArea = computed(() => uiDatatype.value === UITypes.LongText)
   const isInt = computed(() => abstractType.value === 'integer')
   const isFloat = computed(() => abstractType.value === 'float' || abstractType.value === UITypes.Number)
@@ -41,6 +43,7 @@ export function useColumn(column: Ref<ColumnType | undefined>) {
   const isDecimal = computed(() => uiDatatype.value === UITypes.Decimal)
   const isDuration = computed(() => uiDatatype.value === UITypes.Duration)
   const isPercent = computed(() => uiDatatype.value === UITypes.Percent)
+  const isUserSelector = computed(() => uiDatatype.value === 'UserSelector')
   const isSpecificDBType = computed(() => uiDatatype.value === UITypes.SpecificDBType)
   const isAutoSaved = computed(() =>
     [
@@ -93,5 +96,6 @@ export function useColumn(column: Ref<ColumnType | undefined>) {
     isPercent,
     isPhoneNumber,
     isSpecificDBType,
+    isUserSelector,
   }
 }

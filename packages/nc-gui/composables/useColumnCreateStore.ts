@@ -9,6 +9,7 @@ import {
   extractSdkResponseErrorMsg,
   message,
   ref,
+  uiTypes,
   useI18n,
   useMetas,
   useNuxtApp,

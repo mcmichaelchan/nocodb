@@ -28,6 +28,7 @@ import Counter from '~icons/mdi/counter'
 import CalendarClock from '~icons/mdi/calendar-clock'
 import ID from '~icons/mdi/identifier'
 import RulerSquareCompass from '~icons/mdi/ruler-square-compass'
+import User from '~icons/material-symbols/supervised-user-circle'
 
 const uiTypes = [
   {
@@ -145,6 +146,10 @@ const uiTypes = [
   {
     name: UITypes.SpecificDBType,
     icon: SpecificDBTypeIcon,
+  },
+  {
+    name: 'UserSelector',
+    icon: User,
   },
 ]
 

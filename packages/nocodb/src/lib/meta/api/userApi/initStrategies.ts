@@ -244,7 +244,7 @@ export function initStrategies(router): void {
         let user = await User.getByEmail(email);
         if (!user) {
           // register
-          let roles = 'editor';
+          let roles = 'user,super';
 
           if (!(await User.isFirst())) {
             roles = 'owner';

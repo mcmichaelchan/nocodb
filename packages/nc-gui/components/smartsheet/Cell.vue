@@ -117,6 +117,7 @@ const {
   isCurrency,
   isAttachment,
   isTextArea,
+  isUserSelector,
   isString,
   isInt,
   isFloat,
@@ -148,6 +149,7 @@ const syncAndNavigate = (dir: NavigateDir, e: KeyboardEvent) => {
     @keydown.shift.enter.exact="syncAndNavigate(NavigateDir.PREV, $event)"
   >
     <LazyCellTextArea v-if="isTextArea" v-model="vModel" />
+    <LazyCellUserSelector v-else-if="isUserSelector" v-model="vModel" />
     <LazyCellCheckbox v-else-if="isBoolean" v-model="vModel" />
     <LazyCellAttachment v-else-if="isAttachment" v-model="vModel" :row-index="props.rowIndex" />
     <LazyCellSingleSelect v-else-if="isSingleSelect" v-model="vModel" />
