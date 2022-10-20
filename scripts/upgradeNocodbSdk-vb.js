@@ -23,17 +23,25 @@ const replacePackageName = (filePath) => {
   });
 };
 
+const addSdkDep = (filePath) => {
+  const packageJson = JSON.parse(fs.readdirSync(filePath, "utf-8"));
+  packageJson.dependencies[nocodbSdkPackage.name] = nocodbSdkPackage.version;
+  fs.writeFileSync(filePath, JSON.stringify(packageJson, 0, 2));
+};
+
 const bumbVersionAndSave = () => {
-  // upgrade nocodb-sdk version in nocodb
-  execSync(
-    `cd packages/nocodb && npm install --save --save-exact ${nocodbSdkPackage.name}@${nocodbSdkPackage.version}`,
-    {}
-  );
-  // upgrade nocodb-sdk version in nc-gui
-  execSync(
-    `cd packages/nc-gui && npm install --save --save-exact ${nocodbSdkPackage.name}@${nocodbSdkPackage.version}`,
-    {}
-  );
+  addSdkDep(path.join(__dirname, "../packages/nocodb"));
+  addSdkDep(path.join(__dirname, "../packages/nc-gui"));
+  //   // upgrade nocodb-sdk version in nocodb
+  //   execSync(
+  //     `cd packages/nocodb && npm install --save --save-exact ${nocodbSdkPackage.name}@${nocodbSdkPackage.version}`,
+  //     {}
+  //   );
+  //   // upgrade nocodb-sdk version in nc-gui
+  //   execSync(
+  //     `cd packages/nc-gui && npm install --save --save-exact ${nocodbSdkPackage.name}@${nocodbSdkPackage.version}`,
+  //     {}
+  //   );
 };
 
 const dfs = function (dir) {
