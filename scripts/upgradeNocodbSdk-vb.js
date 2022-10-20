@@ -30,8 +30,8 @@ const addSdkDep = (filePath) => {
 };
 
 const bumbVersionAndSave = () => {
-  addSdkDep(path.join(__dirname, "../packages/nocodb"));
-  addSdkDep(path.join(__dirname, "../packages/nc-gui"));
+  addSdkDep(path.join(__dirname, "../packages/nocodb/package.json"));
+  addSdkDep(path.join(__dirname, "../packages/nc-gui/package.json"));
   //   // upgrade nocodb-sdk version in nocodb
   //   execSync(
   //     `cd packages/nocodb && npm install --save --save-exact ${nocodbSdkPackage.name}@${nocodbSdkPackage.version}`,
