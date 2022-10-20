@@ -24,7 +24,7 @@ const replacePackageName = (filePath) => {
 };
 
 const addSdkDep = (filePath) => {
-  const packageJson = JSON.parse(fs.readdirSync(filePath, "utf-8"));
+  const packageJson = JSON.parse(fs.readFileSync(filePath, "utf-8"));
   packageJson.dependencies[nocodbSdkPackage.name] = nocodbSdkPackage.version;
   fs.writeFileSync(filePath, JSON.stringify(packageJson, 0, 2));
 };
