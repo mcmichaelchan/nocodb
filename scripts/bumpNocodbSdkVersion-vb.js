@@ -10,6 +10,7 @@ const packageJson = JSON.parse(
 
 packageJson.name = `@tencent/${packageJson.name}-vb`;
 packageJson.version = process.env.targetVersion;
+delete packageJson.scripts.preinstall;
 
 fs.writeFileSync(
   path.join(__dirname, "..", "packages", "nocodb-sdk", "package.json"),
