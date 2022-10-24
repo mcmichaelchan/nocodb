@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { RelationTypes, UITypes, isVirtualCol } from 'nocodb-sdk'
-import { useSharedFormStoreOrThrow } from '#imports'
+import { useSharedFormStoreOrThrow, useRoute, onMounted } from '#imports'
 
 const { sharedFormView, submitForm, v$, formState, notFound, formColumns, submitted, secondsRemain, isLoading } =
   useSharedFormStoreOrThrow()
+
+const route = useRoute()
 
 function isRequired(_columnObj: Record<string, any>, required = false) {
   let columnObj = _columnObj
@@ -17,6 +19,17 @@ function isRequired(_columnObj: Record<string, any>, required = false) {
 
   return !!(required || (columnObj && columnObj.rqd && !columnObj.cdf))
 }
+
+onMounted(() => {
+  const formFields = formColumns.value?.map(({ title }) => title)
+  const initialValue: Record<string, any> = {}
+  Object.entries(route.query).forEach(([key, value]) => {
+    if (formFields?.includes(key) && formState.value) {
+      initialValue[key] = value
+    }
+  })
+  formState.value = initialValue
+})
 </script>
 
 <template>

@@ -22,7 +22,8 @@ const showEditFormulaWarningMessage = () => {
 
 const result = computed(() => (isPg.value ? handleTZ(value) : value))
 
-const urls = computed(() => replaceUrlsWithLink(result.value))
+const urls = computed(() => replaceUrlsWithLink(result.value.value))
+console.log(urls)
 </script>
 
 <template>

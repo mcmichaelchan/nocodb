@@ -373,12 +373,13 @@ const formulas: Record<string, any> = {
     type: formulaTypes.STRING,
     validation: {
       args: {
-        rqd: 1,
+        min: 1,
+        max: 2,
       },
     },
     description: 'Convert to a hyperlink if it is a valid URL',
-    syntax: 'URL(str)',
-    examples: ['URL("https://github.com/nocodb/nocodb")', 'URL({column1})'],
+    syntax: 'URL(str, [btn-label])',
+    examples: ['URL("https://github.com/nocodb/nocodb", "查看详情")', 'URL({column1})'],
   },
   WEEKDAY: {
     type: formulaTypes.NUMERIC,

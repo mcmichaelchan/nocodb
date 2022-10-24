@@ -54,6 +54,14 @@ const url = computed(() => {
   return `https://${value}`
 })
 
+const btnLabel = computed(() => {
+  if (!url) {
+    return ''
+  }
+  const { searchParams } = new URL(url.value)
+  return searchParams.get('btn-label')
+})
+
 const { cellUrlOptions } = useCellUrlConfig(url)
 
 const focus: VNodeRef = (el) => (el as HTMLInputElement)?.focus()

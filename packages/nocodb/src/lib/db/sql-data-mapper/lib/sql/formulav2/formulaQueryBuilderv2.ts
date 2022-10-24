@@ -567,6 +567,18 @@ export default async function formulaQueryBuilderv2(
           }
           break;
         case 'URL':
+          console.log(pt.arguments);
+          const args = [pt.arguments[0]];
+          if (pt.arguments[1]) {
+            args.push(
+              {
+                type: 'Literal',
+                value: ',',
+                raw: '","',
+              },
+              pt.arguments[1]
+            );
+          }
           return fn(
             {
               type: 'CallExpression',
@@ -576,7 +588,7 @@ export default async function formulaQueryBuilderv2(
                   value: 'URI::(',
                   raw: '"URI::("',
                 },
-                pt.arguments[0],
+                ...args,
                 {
                   type: 'Literal',
                   value: ')',

@@ -5,10 +5,11 @@ export const replaceUrlsWithLink = (text: string): boolean | string => {
 
   const rawText = text.toString()
   let found = false
-  const out = rawText.replace(/URI::\((.*?)\)/g, (_, url) => {
+  const out = rawText.replace(/URI::\((.*?)\)/g, (_, matchStr) => {
+    const [url, label] = matchStr.split(',')
     found = true
     const a = document.createElement('a')
-    a.textContent = url
+    a.textContent = label
     a.setAttribute('href', url)
     a.setAttribute('target', '_blank')
     return a.outerHTML
