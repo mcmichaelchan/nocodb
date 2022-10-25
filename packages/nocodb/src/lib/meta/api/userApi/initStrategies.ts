@@ -212,7 +212,8 @@ export function initStrategies(router): void {
   const clientID = 'a3bdc0c84ef14b7a';
   const clientSecret = '49eb8809e4d6a5700f82aa2b4cd2f8c9';
   const callbackURL = 'localhost:3000';
-  const powerDomain = 'http://betapower.fusion.woa.com';
+  const powerDomain =
+    process.env.POWER_DOMAIN ?? 'http://betapower.fusion.woa.com';
 
   const powerConfig = {
     authorizationURL: `${powerDomain}/oauth/authorize`,
@@ -237,6 +238,7 @@ export function initStrategies(router): void {
             },
           }
         );
+        console.log(userInfo);
         const { userExt, userId } = userInfo;
         const { defaultMailType, tencentMail, fusionMail } = userExt;
         const nickname = userInfo.nickname || userId;
@@ -252,7 +254,7 @@ export function initStrategies(router): void {
 
           const salt = await promisify(bcrypt.genSalt)(10);
           user = await await User.insert({
-            email: 'mcjjchen@tencent.com',
+            email,
             password: '',
             salt,
             firstname: nickname,
