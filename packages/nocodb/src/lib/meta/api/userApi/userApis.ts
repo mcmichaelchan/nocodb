@@ -566,7 +566,10 @@ const mapRoutes = (router) => {
   router.get('/auth/power', (req: any, res, next) =>
     passport.authenticate('power', {
       // state: req.query.state,
-      callbackURL: req.ncSiteUrl + '/auth/power/genTokenByCode',
+      callbackURL:
+        req.ncSiteUrl + process.env.NODE_ENV === 'production'
+          ? '/nocoapi'
+          : '' + '/auth/power/genTokenByCode',
       // callbackURL: 'https://www.baidu.com',
     })(req, res, next)
   );
