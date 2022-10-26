@@ -49,7 +49,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if ((to.meta.requiresAuth || typeof to.meta.requiresAuth === 'undefined') && !state.signedIn.value) {
     /** If this is the first usern navigate to signup page directly */
     if (state.appInfo.value.firstUser) {
-      return navigateTo('/signup')
+      return navigateTo('/signin')
     }
 
     return navigateTo('/signin')
