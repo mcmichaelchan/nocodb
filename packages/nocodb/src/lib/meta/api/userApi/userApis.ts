@@ -261,7 +261,10 @@ async function powerSignin(req, res, next) {
     'power',
     {
       session: false,
-      callbackURL: req.ncSiteUrl + '/auth/power/genTokenByCode',
+      callbackURL:
+        req.ncSiteUrl + process.env.NODE_ENV === 'production'
+          ? '/nocoapi'
+          : '' + '/auth/power/genTokenByCode',
     },
     async (err, user, info): Promise<any> =>
       await successfulSignIn({
