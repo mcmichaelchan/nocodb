@@ -288,7 +288,7 @@ export default class GqlAuthResolver {
         to: email,
         subject: 'Verify email',
         html: ejs.render(template, {
-          verifyLink: `${req.ncSiteUrl}/email/verify/${user.email_verification_token}`,
+          verifyLink: `${req.ncAPIUrl}/email/verify/${user.email_verification_token}`,
         }),
       });
     } catch (e) {
@@ -343,9 +343,9 @@ export default class GqlAuthResolver {
       await this.emailClient.mailSend({
         to: user.email,
         subject: 'Password Reset Link',
-        text: `Visit following link to update your password : ${req.ncSiteUrl}/password/reset/${token}.`,
+        text: `Visit following link to update your password : ${req.ncAPIUrl}/password/reset/${token}.`,
         html: ejs.render(template, {
-          resetLink: `${req.ncSiteUrl}/password/reset/${token}`,
+          resetLink: `${req.ncAPIUrl}/password/reset/${token}`,
         }),
       });
     } catch (e) {

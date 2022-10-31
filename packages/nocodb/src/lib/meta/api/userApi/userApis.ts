@@ -261,10 +261,7 @@ async function powerSignin(req, res, next) {
     'power',
     {
       session: false,
-      callbackURL:
-        req.ncSiteUrl +
-        (process.env.LOCAL ? '' : '/nocoapi') +
-        '/auth/power/genTokenByCode',
+      callbackURL: req.ncAPIUrl + '/auth/power/genTokenByCode',
     },
     async (err, user, info): Promise<any> =>
       await successfulSignIn({
@@ -569,10 +566,7 @@ const mapRoutes = (router) => {
   router.get('/auth/power', (req: any, res, next) =>
     passport.authenticate('power', {
       // state: req.query.state,
-      callbackURL:
-        req.ncSiteUrl +
-        (process.env.LOCAL ? '' : '/nocoapi') +
-        '/auth/power/genTokenByCode',
+      callbackURL: req.ncAPIUrl + '/auth/power/genTokenByCode',
       // callbackURL: 'https://www.baidu.com',
     })(req, res, next)
   );

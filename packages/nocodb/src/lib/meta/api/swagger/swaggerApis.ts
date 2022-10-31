@@ -21,7 +21,7 @@ async function swaggerJson(req, res) {
 
   swagger.servers = [
     {
-      url: req.ncSiteUrl,
+      url: req.ncAPIUrl,
     },
     {
       url: '{customUrl}',

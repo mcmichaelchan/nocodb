@@ -953,7 +953,7 @@ export default class RestAuthCtrl {
           subject: 'Verify email',
           html: ejs.render(template, {
             verifyLink:
-              req.ncSiteUrl + `/email/verify/${user.email_verification_token}`,
+              req.ncAPIUrl + `/email/verify/${user.email_verification_token}`,
           }),
         });
       } catch (e) {
@@ -1049,7 +1049,7 @@ export default class RestAuthCtrl {
           subject: 'Password Reset Link',
           text: `Visit following link to update your password : ${req.ncSiteUrl}/password/reset/${token}.`,
           html: ejs.render(template, {
-            resetLink: req.ncSiteUrl + `/password/reset/${token}`,
+            resetLink: req.ncAPIUrl + `/password/reset/${token}`,
           }),
         });
       } catch (e) {

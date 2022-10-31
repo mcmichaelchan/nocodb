@@ -1231,7 +1231,7 @@ export default class NcMetaMgr {
       );
 
       return {
-        url: `${req.ncSiteUrl}/dl/${this.getProjectId(args)}/${this.getDbAlias(
+        url: `${req.ncAPIUrl}/dl/${this.getProjectId(args)}/${this.getDbAlias(
           args
         )}/${fileName}`,
         title: file.originalname,
@@ -1300,7 +1300,7 @@ export default class NcMetaMgr {
           appendPath?.length ? appendPath.join('/') + '/' : ''
         }${fileName}`;
       } else {
-        url = `${req.ncSiteUrl}/dl/${projectId}/${dbAlias}/${
+        url = `${req.ncAPIUrl}/dl/${projectId}/${dbAlias}/${
           appendPath?.length ? appendPath.join('/') + '/' : ''
         }${fileName}`;
       }

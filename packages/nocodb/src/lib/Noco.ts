@@ -203,6 +203,7 @@ export default class Noco {
         this.config?.envs?.[this.env]?.publicUrl ||
         this.config?.publicUrl ||
         req.protocol + '://' + req.get('host');
+      req.ncAPIUrl = req.ncSiteUrl + (process.env.API_PATH || '');
       req.ncFullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
       next();
     });
