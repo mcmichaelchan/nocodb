@@ -26,11 +26,10 @@ export async function upload(req: Request, res: Response) {
         slash(path.join(destPath, fileName)),
         file
       );
-
       if (!url) {
         url = `${(req as any).ncSiteUrl}/download/${filePath.join(
           '/'
-        )}/${fileName}`;
+        )}/${fileName}?originalName=${encodeURIComponent(file.originalname)}`;
       }
 
       return {
@@ -93,6 +92,13 @@ export async function fileRead(req, res) {
     const type =
       mimetypes[path.extname(req.params?.[0]).split('/').pop().slice(1)] ||
       'text/plain';
+    const originalName = req.query.originalName;
+    const headers = { 'Content-Type': type };
+    if (originalName) {
+      headers[
+        'Content-Disposition'
+      ] = `attachment;filename=${encodeURIComponent(req.query.originalName)}`;
+    }
     // const img = await this.storageAdapter.fileRead(slash(path.join('nc', req.params.projectId, req.params.dbAlias, 'uploads', req.params.fileName)));
     const img = await storageAdapter.fileRead(
       slash(
@@ -106,8 +112,14 @@ export async function fileRead(req, res) {
         )
       )
     );
-    res.writeHead(200, { 'Content-Type': type });
-    res.end(img, 'binary');
+    img.on('data', (chunk) => {
+      res.write(chunk, 'binary');
+    });
+    res.writeHead(200, headers);
+    img.on('end', () => {
+      res.end();
+    });
+    // res.end(img, 'binary');
   } catch (e) {
     console.log(e);
     res.status(404).send('Not found');
