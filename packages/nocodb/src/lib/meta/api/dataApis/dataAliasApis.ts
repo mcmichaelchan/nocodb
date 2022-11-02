@@ -97,15 +97,21 @@ async function dataDelete(req: Request, res: Response) {
 }
 
 async function getDataList(model, view: View, req) {
+  console.time('baseget');
   const base = await Base.get(model.base_id);
+  console.timeEnd('baseget');
 
+  console.time('getBaseModelSQL');
   const baseModel = await Model.getBaseModelSQL({
     id: model.id,
     viewId: view?.id,
     dbDriver: NcConnectionMgrv2.get(base),
   });
+  console.timeEnd('getBaseModelSQL');
 
+  console.time('getAst');
   const requestObj = await getAst({ model, query: req.query, view });
+  console.timeEnd('getAst');
 
   const listArgs: any = { ...req.query };
   try {
@@ -118,13 +124,17 @@ async function getDataList(model, view: View, req) {
   let data = [];
   let count = 0;
   try {
+    console.time('nocoExecute');
     data = await nocoExecute(
       requestObj,
       await baseModel.list(listArgs),
       {},
       listArgs
     );
+    console.timeEnd('nocoExecute');
+    console.time('count');
     count = await baseModel.count(listArgs);
+    console.timeEnd('count');
   } catch (e) {
     // show empty result instead of throwing error here
     // e.g. search some text in a numeric field
