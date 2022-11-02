@@ -567,7 +567,6 @@ export default async function formulaQueryBuilderv2(
           }
           break;
         case 'URL':
-          console.log(pt.arguments);
           const args = [pt.arguments[0]];
           if (pt.arguments[1]) {
             args.push(

@@ -13,7 +13,9 @@ import getAst from '../../../db/sql-data-mapper/lib/sql/helpers/getAst';
 
 // todo: Handle the error case where view doesnt belong to model
 async function dataList(req: Request, res: Response) {
+  console.time('getViewAndModelFromRequestByAliasOrId');
   const { model, view } = await getViewAndModelFromRequestByAliasOrId(req);
+  console.timeEnd('getViewAndModelFromRequestByAliasOrId');
   res.json(await getDataList(model, view, req));
 }
 

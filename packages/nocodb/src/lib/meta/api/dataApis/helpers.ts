@@ -20,19 +20,25 @@ export async function getViewAndModelFromRequestByAliasOrId(
     | Request<{ projectName: string; tableName: string; viewName?: string }>
     | Request
 ) {
+  console.time('getWithInfoByTitleOrId');
   const project = await Project.getWithInfoByTitleOrId(req.params.projectName);
+  console.timeEnd('getWithInfoByTitleOrId');
 
+  console.time('getByAliasOrId');
   const model = await Model.getByAliasOrId({
     project_id: project.id,
     base_id: project.bases?.[0]?.id,
     aliasOrId: req.params.tableName,
   });
+  console.timeEnd('getByAliasOrId');
+  console.time('getByTitleOrId');
   const view =
     req.params.viewName &&
     (await View.getByTitleOrId({
       titleOrId: req.params.viewName,
       fk_model_id: model.id,
     }));
+  console.timeEnd('getByTitleOrId');
   if (!model) NcError.notFound('Table not found');
   return { model, view };
 }

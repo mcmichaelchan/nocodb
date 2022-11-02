@@ -65,9 +65,9 @@ export async function uploadViaURL(req: Request, res: Response) {
       );
 
       if (!attachmentUrl) {
-        attachmentUrl = `${(req as any).ncSiteUrl}/download/${filePath.join(
-          '/'
-        )}/${fileName}`;
+        attachmentUrl = `${(req as any).ncSiteUrl}${
+          process.env.API_PATH ?? ''
+        }/download/${filePath.join('/')}/${fileName}`;
       }
 
       return {
