@@ -29,6 +29,8 @@ export const useUIPermission = createSharedComposable(() => {
       return hasPermission(previewAs.value, true, permission)
     }
 
+    console.log(allRoles.value, 'roles')
+
     return Object.entries(allRoles.value).some(([role, hasRole]) =>
       hasPermission(role as Role | ProjectRole, hasRole, permission),
     )
