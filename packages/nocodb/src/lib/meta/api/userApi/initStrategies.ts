@@ -212,8 +212,7 @@ export function initStrategies(router): void {
   const clientID = 'a3bdc0c84ef14b7a';
   const clientSecret = '49eb8809e4d6a5700f82aa2b4cd2f8c9';
   const callbackURL = 'localhost:3000';
-  const powerDomain =
-    process.env.POWER_DOMAIN ?? 'http://betapower.fusion.woa.com';
+  const powerDomain = process.env.POWER_DOMAIN ?? 'http://power.fusion.woa.com';
 
   const powerConfig = {
     authorizationURL: `${powerDomain}/oauth/authorize`,
@@ -242,7 +241,13 @@ export function initStrategies(router): void {
         const { userExt, userId } = userInfo;
         const { defaultMailType, tencentMail, fusionMail } = userExt;
         const nickname = userInfo.nickname || userId;
-        const email = defaultMailType === 0 ? tencentMail : fusionMail;
+        let email = tencentMail || fusionMail;
+        if (defaultMailType === 2 && fusionMail) {
+          email = fusionMail;
+        }
+        if (!email) {
+          throw new Error('当前用户没有关联邮箱，请到power中设置');
+        }
         let user = await User.getByEmail(email);
         if (!user) {
           // register
