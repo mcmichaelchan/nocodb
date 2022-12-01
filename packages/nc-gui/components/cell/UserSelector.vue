@@ -66,7 +66,7 @@ const fetchUser = useDebounceFn((value) => {
   const fetchId = lastFetchId
   state.data = []
   state.fetching = true
-  fetch(`${baseURL}/api/v1/auth/power/search?name=${value}`)
+  fetch(`/api/v1/auth/power/search?name=${value}`)
     .then((response) => response.json())
     .then((body) => {
       if (fetchId !== lastFetchId) {
