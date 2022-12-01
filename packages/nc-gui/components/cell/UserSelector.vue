@@ -66,7 +66,12 @@ const fetchUser = useDebounceFn((value) => {
   const fetchId = lastFetchId
   state.data = []
   state.fetching = true
-  fetch(`/api/v1/auth/power/search?name=${value}`)
+  console.log(baseURL)
+  fetch(
+    `${
+      baseURL.indexOf('my.fusion.woa.com') > -1 ? baseURL.replace('http', 'https') : baseURL
+    }/api/v1/auth/power/search?name=${value}`,
+  )
     .then((response) => response.json())
     .then((body) => {
       if (fetchId !== lastFetchId) {
