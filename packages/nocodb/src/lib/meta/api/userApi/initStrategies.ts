@@ -237,7 +237,6 @@ export function initStrategies(router): void {
             },
           }
         );
-        console.log(userInfo);
         const { userExt, userId } = userInfo;
         const { defaultMailType, tencentMail, fusionMail } = userExt;
         const nickname = userInfo.nickname || userId;

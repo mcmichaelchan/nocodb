@@ -5,7 +5,7 @@ FROM golang:alpine3.14 as lt-builder
 
 WORKDIR /usr/src/
 
-RUN apk add --no-cache git make musl-dev gcc
+RUN apk add --no-cache git make musl-dev gcc curl
 
 # build litestream
 RUN git clone https://github.com/benbjohnson/litestream.git litestream
