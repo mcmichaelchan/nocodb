@@ -69,7 +69,7 @@ const fetchUser = useDebounceFn((value) => {
   console.log(baseURL)
   fetch(
     `${
-      baseURL.indexOf('my.fusion.woa.com') > -1 ? baseURL.replace('http', 'https') : baseURL
+      baseURL.indexOf('my.fusion.woa.com') > -1 ? 'https://my.fusion.woa.com/nocoapi' : baseURL
     }/api/v1/auth/power/search?name=${value}`,
   )
     .then((response) => response.json())
