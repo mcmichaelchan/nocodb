@@ -1,14 +1,20 @@
-const express = require('express');
-const path = require('path');
-
+const express = require("express");
+const path = require("path");
 
 class XcLibGui {
-
   static expressMiddleware(dashboardPath) {
-
     const router = express.Router();
     // Express will serve up production assets i.e. main.js
-    router.use(dashboardPath, express.static(path.join(__dirname, 'dist')));
+    router.use(
+      dashboardPath,
+      express.static(path.join(__dirname, "dist"), {
+        setHeaders: (res, path, stat) => {
+          if (path.indexOf("index.html") > -1) {
+            res.set("Cache-Control", "no-cache");
+          }
+        },
+      })
+    );
 
     return router;
   }
